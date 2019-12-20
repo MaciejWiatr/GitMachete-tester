@@ -18,13 +18,13 @@ class SandboxSetup():
         os.chdir(dir)
         if len(args) > 1:
             opt = args[1]
-            os.system('git init %s'%(opt))
+            os.system('git init %s' % (opt))
         else:
             os.system('git init')
         return self
 
     def newBranch(self, branch_name):
-        os.system('git checkout -b %s'%(branch_name))
+        os.system('git checkout -b %s' % (branch_name))
         return self
 
     # rstrip
@@ -32,24 +32,28 @@ class SandboxSetup():
     def commit(self, *args):
         # branch = os.popen('git symbolic-ref --short HEAD').read().strip()
         random_name = "".join(random.choices(string.ascii_letters, k=10))
-        f = '%s.txt'%(random_name)
+        f = '%s.txt' % (random_name)
         # f = f'{branch}-{args[0]}.txt'
-        os.system('touch %s'%(f))
-        os.system('git add %s'%(f))
-        os.system('git commit -m "%s"'%("".join(args)))
+        os.system('touch %s' % (f))
+        os.system('git add %s' % (f))
+        os.system('git commit -m "%s"' % ("".join(args)))
         return self
 
     def push(self):
         branch = os.popen('git symbolic-ref --short HEAD').read()
-        os.system('git push -u origin %s'%(branch))
+        os.system('git push -u origin %s' % (branch))
         return self
 
     def setupSandbox(self):
+
         self.newRepo(self.remote_path, '--bare')
         self.newRepo(self.sandbox_path)
-        os.system('git remote add origin %s'%(self.remote_path))
-        self.newBranch('root')\
-            .commit('root')\
+        os.system('git remote add origin %s' % (self.remote_path))
+        self.newBranch('root')
+        os.system('git config user.email "tester@test.com"')
+        os.system('git config user.name "Tester Test"')
+        os.system('git config --list')
+        self.commit('root')\
             .newBranch('develop')\
             .commit('develop commit')\
             .newBranch('allow-ownership-link')\

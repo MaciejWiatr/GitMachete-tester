@@ -1,0 +1,6 @@
+flake8
+mock
+pycodestyle
+pylint
+stestr
+./MacheteSandbox/
