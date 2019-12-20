@@ -18,13 +18,13 @@ class SandboxSetup():
         os.chdir(dir)
         if len(args) > 1:
             opt = args[1]
-            os.system(f'git init {opt}')
+            os.system('git init %s'%(opt))
         else:
             os.system('git init')
         return self
 
     def newBranch(self, branch_name):
-        os.system(f'git checkout -b {branch_name}')
+        os.system('git checkout -b %s'%(branch_name))
         return self
 
     # rstrip
@@ -32,22 +32,22 @@ class SandboxSetup():
     def commit(self, *args):
         # branch = os.popen('git symbolic-ref --short HEAD').read().strip()
         random_name = "".join(random.choices(string.ascii_letters, k=10))
-        f = f'{random_name}.txt'
+        f = '%s.txt'%(random_name)
         # f = f'{branch}-{args[0]}.txt'
-        os.system(f'touch {f}')
-        os.system(f'git add {f}')
-        os.system(f'git commit -m "{"".join(args)}"')
+        os.system('touch %s'%(f))
+        os.system('git add %s'%(f))
+        os.system('git commit -m "%s"'%("".join(args)))
         return self
 
     def push(self):
         branch = os.popen('git symbolic-ref --short HEAD').read()
-        os.system(f'git push -u origin {branch}')
+        os.system('git push -u origin %s'%(branch))
         return self
 
     def setupSandbox(self):
         self.newRepo(self.remote_path, '--bare')
         self.newRepo(self.sandbox_path)
-        os.system(f'git remote add origin {self.remote_path}')
+        os.system('git remote add origin %s'%(self.remote_path))
         self.newBranch('root')\
             .commit('root')\
             .newBranch('develop')\
@@ -89,7 +89,7 @@ master
         with open('.git/machete', "w+") as file:
             file.writelines(machete_string)
         os.system('git branch -d root')
-        machete_status_process = os.popen(f'git machete status')
+        machete_status_process = os.popen('git machete status')
         machete_status = machete_status_process.read()
         machete_status_process.close()
         return machete_status
